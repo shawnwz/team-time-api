@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id Int @id @default(autoincrement())
-  uid    String @default(uuid())
+  uid    String @unique @default(uuid())
   email String  @unique
   name  String?
   teams Teams_Users[]
@@ -25,7 +25,7 @@ model User {
 
 model Team {
   id Int @id @default(autoincrement())
-  tid String @default(uuid())
+  tid String @unique @default(uuid())
   name String
   users Teams_Users[]
 }
