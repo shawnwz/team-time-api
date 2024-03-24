@@ -60,3 +60,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Dev
+### To generate a cnotroller
+```shell
+nest generate controller team --flat
+```
