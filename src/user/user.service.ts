@@ -23,8 +23,7 @@ export class UserService {
       data: {
         uid: uuidv4(),
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         country: user.country,
         timezone: user.timezone,
         teams: {

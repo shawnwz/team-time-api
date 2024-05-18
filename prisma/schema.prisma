@@ -17,12 +17,12 @@ model User {
   id Int @id @default(autoincrement())
   uid    String @unique @default(uuid())
   email String  @unique
-  firstName  String?
-  lastName String?
+  name  String?
   photo String?
   teams Teams_Users[]
   country String
   timezone String
+  accounts Account[]
 }
 
 model Team {
@@ -42,3 +42,24 @@ model Teams_Users {
 
   @@id([user_id, team_id])
 }
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [uid], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+

@@ -13,7 +13,7 @@ export class TeamService {
     });
   }
 
-  async findTeamByName(name: string): Promise<any | null> {
+  async findTeamByName(name: string): Promise<Team | null> {
     return this.prisma.team.findUnique({
       where: { name: name },
       include: {
