@@ -14,20 +14,21 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  uid    String @unique @default(uuid())
-  email String  @unique
+  id    String @unique @default(uuid())
+  email String?  @unique
   name  String?
   photo String?
   teams Teams_Users[]
   country String
   timezone String
-  accounts Account[]
+  provider String
+  providerAccountId String @map("provider_account_id")
+  createAt DateTime @map("create_at")
+  @@unique(name: "unique_provider_id", fields: [provider, providerAccountId])
 }
 
 model Team {
   id Int @id @default(autoincrement())
-  tid String @unique @default(uuid())
   name String @unique
   description String @default("")
   users Teams_Users[]
@@ -35,7 +36,7 @@ model Team {
 
 model Teams_Users {
   user   User @relation(fields: [user_id], references: [id])
-  user_id Int // relation scalar field (used in the `@relation` attribute above)
+  user_id String // relation scalar field (used in the `@relation` attribute above)
   team       Team     @relation(fields: [team_id], references: [id])
   team_id     Int // relation scalar field (used in the `@relation` attribute above)
   created DateTime @default(now())
@@ -43,23 +44,5 @@ model Teams_Users {
   @@id([user_id, team_id])
 }
 
-model Account {
-  id                String  @id @default(cuid())
-  userId            String  @map("user_id")
-  type              String
-  provider          String
-  providerAccountId String  @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
 
-  user User @relation(fields: [userId], references: [uid], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
-}
 

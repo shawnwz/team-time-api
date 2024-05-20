@@ -4,4 +4,6 @@ export class CreateUserDto {
   photo: string | null;
   country: string;
   timezone: string;
+  provider: string;
+  provider_account_id: string;
 }
