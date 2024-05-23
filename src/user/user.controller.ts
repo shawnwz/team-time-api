@@ -7,6 +7,8 @@ import { User as UserModel } from '@prisma/client';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get()
+  async get() {}
   //@UseGuards(AuthGuard('jwt'))
   @UseGuards(AuthGuard)
   @Get('id/:id')
@@ -14,7 +16,6 @@ export class UserController {
     @Param('id') id: string,
     @Req() req: any,
   ): Promise<UserModel> {
-    console.log(req.user);
     return this.userService.findUser(id);
   }
 }

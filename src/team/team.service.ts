@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { Team } from '@prisma/client';
+import { CreateTeamDto } from './dto/create-team.dto';
 
 @Injectable()
 export class TeamService {
@@ -20,6 +21,25 @@ export class TeamService {
         users: {
           include: { user: true },
         },
+      },
+    });
+  }
+
+  async isTeamExistByName(name: string): Promise<boolean> {
+    return this.prisma.team
+      .findMany({
+        where: {
+          name: name,
+        },
+      })
+      .then((t) => t.length > 0);
+  }
+
+  async createTeam(team: CreateTeamDto): Promise<Team | null> {
+    return this.prisma.team.create({
+      data: {
+        name: team.name,
+        description: team.description,
       },
     });
   }

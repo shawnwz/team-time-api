@@ -32,6 +32,7 @@ model Team {
   name String @unique
   description String @default("")
   users Teams_Users[]
+  created DateTime @default(now())
 }
 
 model Teams_Users {
