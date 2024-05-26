@@ -67,7 +67,25 @@ export class JwtStrategy extends PassportStrategy(PassportJwtStrategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET'),
+      secretOrKey: configService.get<string>('ACCESS_TOKEN_SECRET'),
+    });
+  }
+
+  async validate(payload: any) {
+    return { id: payload.sub, username: payload.username };
+  }
+}
+
+@Injectable()
+export class RefreshTokenStrategy extends PassportStrategy(
+  PassportJwtStrategy,
+) {
+  constructor(configService: ConfigService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: configService.get<string>('REFRESH_TOKEN_SECRET'),
+      passReqToCallback: true,
     });
   }
 

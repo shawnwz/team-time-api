@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { catchError, firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
 
 interface UserdataGoogle {
   sub: string;
@@ -22,6 +23,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private prisma: PrismaService,
     private readonly httpService: HttpService,
+    private configService: ConfigService,
   ) {}
 
   async getOrCreateUser(user: CreateUserDto) {
@@ -55,12 +57,35 @@ export class AuthService {
       },
     });
 
-    const jwt = await this.jwtService.signAsync({ id: u.id, name: u.name });
-    return [jwt, u.id, u.name];
+    const accessToken = await this.jwtService.signAsync(
+      {
+        sub: u.id,
+        username: u.name,
+      },
+      {
+        secret: this.configService.get('ACCESS_TOKEN_SECRET'),
+        expiresIn: '15h',
+      },
+    );
+
+    const refreshToken = await this.jwtService.signAsync(
+      {
+        sub: u.id,
+        username: u.name,
+      },
+      {
+        secret: this.configService.get('REFRESH_TOKEN_SECRET'),
+        expiresIn: '1h',
+      },
+    );
+    return [accessToken, refreshToken, u.id, u.name, u.photo];
   }
 
   async verifyToken(token: string) {
-    const p = this.jwtService.verifyAsync(token);
+    console.log('token is ', token);
+    const p = this.jwtService.verifyAsync(token, {
+      secret: this.configService.get('ACCESS_TOKEN_SECRET'),
+    });
     return p;
   }
 
