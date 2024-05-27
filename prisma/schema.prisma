@@ -28,8 +28,7 @@ model User {
 }
 
 model Team {
-  id Int @id @default(autoincrement())
-  name String @unique
+  name String @id @unique
   description String @default("")
   users Teams_Users[]
   created DateTime @default(now())
@@ -38,11 +37,11 @@ model Team {
 model Teams_Users {
   user   User @relation(fields: [user_id], references: [id])
   user_id String // relation scalar field (used in the `@relation` attribute above)
-  team       Team     @relation(fields: [team_id], references: [id])
-  team_id     Int // relation scalar field (used in the `@relation` attribute above)
+  team       Team     @relation(fields: [team_name], references: [name])
+  team_name     String // relation scalar field (used in the `@relation` attribute above)
   created DateTime @default(now())
 
-  @@id([user_id, team_id])
+  @@id([user_id, team_name])
 }
 
 
