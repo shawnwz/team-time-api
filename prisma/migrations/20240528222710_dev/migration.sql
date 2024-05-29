@@ -4,7 +4,6 @@ CREATE TABLE "User" (
     "email" TEXT,
     "name" TEXT,
     "photo" TEXT,
-    "country" TEXT NOT NULL,
     "timezone" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
     "provider_account_id" TEXT NOT NULL,
@@ -14,6 +13,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Team" (
     "name" TEXT NOT NULL,
+    "logo" TEXT NOT NULL,
     "description" TEXT NOT NULL DEFAULT '',
     "created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

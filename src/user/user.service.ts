@@ -15,6 +15,17 @@ export class UserService {
       },
     });
   }
+
+  async updateTimeZone(uid: string, tz: string): Promise<User> {
+    return this.prisma.user.update({
+      where: {
+        id: uid,
+      },
+      data: {
+        timezone: tz,
+      },
+    });
+  }
   //
   // async createUser(user: CreateUserDto) {
   //   return this.prisma.user.create({

@@ -1,7 +1,9 @@
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { UserService } from './user.service';
 import { User as UserModel } from '@prisma/client';
+import { CreateTeamDto } from '../team/dto/create-team.dto';
+import { UpdateTzDto } from './dto/update-tz.dto';
 
 @Controller('user')
 export class UserController {
@@ -17,5 +19,14 @@ export class UserController {
     @Req() req: any,
   ): Promise<UserModel> {
     return this.userService.findUser(id);
+  }
+
+  @Post('/timezone')
+  @UseGuards(AuthGuard)
+  async updateTimezone(
+    @Req() req,
+    @Body() dto: UpdateTzDto,
+  ): Promise<UserModel> {
+    return this.userService.updateTimeZone(req.user.sub, dto.timezone);
   }
 }

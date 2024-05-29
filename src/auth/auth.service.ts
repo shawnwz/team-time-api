@@ -42,8 +42,7 @@ export class AuthService {
         email: user.email,
         name: user.name,
         photo: user.photo,
-        country: user.country,
-        timezone: user.timezone,
+        timezone: user.timezone ? user.timezone : 'Etc/GMT',
         provider: user.provider,
         providerAccountId: user.provider_account_id,
         createAt: new Date().toISOString(),
@@ -52,7 +51,6 @@ export class AuthService {
         email: user.email,
         name: user.name,
         photo: user.photo,
-        country: user.country,
         timezone: user.timezone,
       },
     });

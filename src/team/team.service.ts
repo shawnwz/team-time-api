@@ -40,6 +40,9 @@ export class TeamService {
       data: {
         name: team.name,
         description: team.description,
+        logo: team.logo
+          ? team.logo
+          : `https://fakeimg.pl/300x300?text=${team.name}`,
         users: {
           create: [
             {
